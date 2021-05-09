@@ -14,6 +14,11 @@ const getRandPos = () => {
   };
 };
 
+let mouse = {
+  x: (30 * canvas.width) / 100,
+  y: (30 * canvas.height) / 100,
+};
+
 let dots = {
   dist: 50,
   population: 500,
@@ -77,6 +82,22 @@ const calcLine = () => {
         context.strokeStyle = lineColour;
         context.stroke();
         context.closePath();
+
+        if (
+          Math.sqrt(
+            Math.pow(dotOne.x - mouse.x, 2) + Math.pow(dotOne.y - mouse.y, 2)
+          ) -
+            dots.rad <
+          dots.dist + 100
+        ) {
+          context.beginPath();
+          context.lineWidth = lineW + .5;
+          context.moveTo(dotOne.x, dotOne.y);
+          context.lineTo(dotTwo.x, dotTwo.y);
+          context.strokeStyle = lineColour;
+          context.stroke();
+          context.closePath();
+        }
       }
     }
   }
@@ -90,6 +111,11 @@ const animate = () => {
     e.draw();
     e.animate();
   });
+};
+
+window.onmousemove = (e) => {
+  mouse.x = e.pageX;
+  mouse.y = e.pageY;
 };
 
 animate();
